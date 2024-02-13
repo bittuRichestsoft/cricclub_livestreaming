@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552156617697",
+    "project_id": "cricclub-live-stream-app",
+    "storage_bucket": "cricclub-live-stream-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552156617697:android:b0cc4f8638d2b7e91bd0a0",
+        "android_client_info": {
+          "package_name": "com.cricclub.cricclub_livestreaming"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwbjGI5NNNxUuK8oDysL9VPL4mu6xHKZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
