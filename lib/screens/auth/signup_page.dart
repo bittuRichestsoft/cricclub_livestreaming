@@ -102,7 +102,7 @@ class _SignupPageState extends State<SignupPage> {
                           isPasswordShow = !isPasswordShow;
                           setState(() {});
                         },
-                        child: Icon(isPasswordShow ? Icons.visibility : Icons.visibility_off),
+                        child: Icon(isPasswordShow ? Icons.visibility_off : Icons.visibility),
                       ),
                     ),
                   ),
@@ -128,7 +128,8 @@ class _SignupPageState extends State<SignupPage> {
                             isConfirmPasswordShow = !isConfirmPasswordShow;
                             setState(() {});
                           },
-                          child: Icon(isPasswordShow ? Icons.visibility : Icons.visibility_off),
+                          child: Icon(
+                              !isConfirmPasswordShow ? Icons.visibility : Icons.visibility_off),
                         )),
                   ),
                 ),
@@ -189,6 +190,13 @@ class _SignupPageState extends State<SignupPage> {
                         showSnackBar("Please enter your password");
                       } else if (passwordController.text.length < 8) {
                         showSnackBar("Password must be 8 character or long");
+                      } else if (!isStrongPassword(passwordController.text)) {
+                        showSnackBar(
+                            "Password must contain a alphabet, number and a special character");
+                      } else if (confirmPasswordController.text.isEmpty) {
+                        showSnackBar("Please enter your confirm password");
+                      } else if (confirmPasswordController.text.length < 8) {
+                        showSnackBar("Confirm Password must be 8 character or long");
                       } else if (passwordController.text != confirmPasswordController.text) {
                         showSnackBar("Confirm password is not matched");
                       } else if (!isCheck) {
@@ -200,19 +208,11 @@ class _SignupPageState extends State<SignupPage> {
                             .signUp(
                                 nameController.text, emailController.text, passwordController.text)
                             .then((value) {
-                          showSnackBar("Account Created Successfully");
                           isSignUpStart = false;
                           setState(() {});
-
-                          prefs.setBool("isLogin", true);
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (_) => MatchJoinScreen()),
-                              (route) => false);
                         }).onError((error, stackTrace) {
                           isSignUpStart = false;
                           setState(() {});
-                          showSnackBar(error.toString());
                         });
                       }
                     },
@@ -263,5 +263,17 @@ class _SignupPageState extends State<SignupPage> {
   bool isEmailCheck(String email) {
     bool isValidEmail = EmailValidator.validate(email);
     return isValidEmail;
+  }
+
+  bool isStrongPassword(String password) {
+    // Define patterns for alphabetic character, numeric digit, and special symbol
+    final alphabeticRegex = RegExp(r'[a-zA-Z]');
+    final numericRegex = RegExp(r'[0-9]');
+    final specialSymbolRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+    // Check if the password satisfies all three criteria
+    return alphabeticRegex.hasMatch(password) &&
+        numericRegex.hasMatch(password) &&
+        specialSymbolRegex.hasMatch(password);
   }
 }

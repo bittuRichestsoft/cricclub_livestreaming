@@ -1,5 +1,6 @@
 import 'package:cricclub_livestreaming/screens/auth/login_page.dart';
 import 'package:cricclub_livestreaming/services/firebase_service.dart';
+import 'package:apivideo_live_stream/apivideo_live_stream.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -34,13 +35,13 @@ class _MatchJoinScreenState extends State<MatchJoinScreen> {
                     onPressed: () {
                       FirebaseService().logout();
                       Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (_) => LoginPage()), (route) => false);
+                          MaterialPageRoute(builder: (_) => const LoginPage()), (route) => false);
                     },
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: AppColor.charcoalColor))),
-                    child: Row(
+                            side: const BorderSide(color: AppColor.charcoalColor))),
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
@@ -66,7 +67,8 @@ class _MatchJoinScreenState extends State<MatchJoinScreen> {
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: clubIdController,
-                        decoration: InputDecoration(hintText: "Club Id", border: InputBorder.none),
+                        decoration:
+                            const InputDecoration(hintText: "Club Id", border: InputBorder.none),
                       ),
                     ),
 
@@ -81,7 +83,8 @@ class _MatchJoinScreenState extends State<MatchJoinScreen> {
                       child: TextField(
                         controller: matchIdController,
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(hintText: "Match Id", border: InputBorder.none),
+                        decoration:
+                            const InputDecoration(hintText: "Match Id", border: InputBorder.none),
                       ),
                     ),
 

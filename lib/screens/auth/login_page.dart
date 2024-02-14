@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                             isPasswordShow = !isPasswordShow;
                             setState(() {});
                           },
-                          child: Icon(isPasswordShow ? Icons.visibility : Icons.visibility_off),
+                          child: Icon(!isPasswordShow ? Icons.visibility : Icons.visibility_off),
                         )),
                   ),
                 ),
@@ -121,6 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                         showSnackBar("Please enter valid email");
                       } else if (passwordController.text.isEmpty) {
                         showSnackBar("Please enter your password");
+                      } else if (!isStrongPassword(passwordController.text)) {
+                        showSnackBar(
+                            "Password must contain a alphabet, number and a special character");
                       } else {
                         isLoginStart = true;
                         setState(() {});
@@ -128,17 +131,9 @@ class _LoginPageState extends State<LoginPage> {
                             .login(emailController.text, passwordController.text)
                             .then((value) {
                           isLoginStart = false;
-
-                          showSnackBar("Login Successfully");
-                          prefs.setBool("isLogin", true);
                           setState(() {});
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (_) => MatchJoinScreen()),
-                              (route) => false);
                         }).onError((error, stackTrace) {
                           isLoginStart = false;
-                          showSnackBar(error.toString());
                           setState(() {});
                         });
                       }
@@ -190,5 +185,17 @@ class _LoginPageState extends State<LoginPage> {
   bool isEmailCheck(String email) {
     bool isValidEmail = EmailValidator.validate(email);
     return isValidEmail;
+  }
+
+  bool isStrongPassword(String password) {
+    // Define patterns for alphabetic character, numeric digit, and special symbol
+    final alphabeticRegex = RegExp(r'[a-zA-Z]');
+    final numericRegex = RegExp(r'[0-9]');
+    final specialSymbolRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+    // Check if the password satisfies all three criteria
+    return alphabeticRegex.hasMatch(password) &&
+        numericRegex.hasMatch(password) &&
+        specialSymbolRegex.hasMatch(password);
   }
 }
